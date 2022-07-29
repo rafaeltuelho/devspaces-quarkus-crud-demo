@@ -11,6 +11,7 @@ While the code is surprisingly simple, under the hood this is using:
  - The high performance Agroal connection pool
  - Infinispan based caching
  - All safely coordinated by the Narayana Transaction Manager
+ - Swagger Open API Spec and UI
 
 ## Requirements
 
