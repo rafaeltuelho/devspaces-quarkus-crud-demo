@@ -35,7 +35,7 @@
 		},
 		{
 			"type": "che",
-			"command": "./mvnw clean package -DskipTests -Dquarkus.kubernetes.deploy=true",
+			"command": "oc project ${DEVWORKSPACE_NAMESPACE}; ./mvnw clean package -DskipTests -Dquarkus.kubernetes.deploy=true",
 			"workdir": "${PROJECT_SOURCE}",
 			"component": "tools",
 			"problemMatcher": [],
