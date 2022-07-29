@@ -29,7 +29,10 @@ components:
         - name: QUARKUS_HTTP_HOST
           value: 0.0.0.0
       image: 'quay.io/devfile/universal-developer-image:ubi8-latest'
-      memoryLimit: 4G
+      memoryLimit: 8Gi
+      memoryRequest: 6Gi
+      cpuRequest: 750m
+      cpuLimit: 2000m
       mountSources: true
       sourceMapping: /projects
       volumeMounts:
