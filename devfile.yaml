@@ -25,11 +25,6 @@ components:
           path: /
           protocol: http
           targetPort: 8080
-        - exposure: public
-          name: swagger
-          path: /swagger-ui
-          protocol: http
-          targetPort: 8080
       env:
         - name: QUARKUS_HTTP_HOST
           value: 0.0.0.0
