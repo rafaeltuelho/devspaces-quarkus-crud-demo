@@ -37,7 +37,7 @@
 			"type": "che",
 			"command": "./mvnw clean package -DskipTests -Dquarkus.kubernetes.deploy=true",
 			"workdir": "${PROJECT_SOURCE}",
-			"component": "ubi-minimal",
+			"component": "tools",
 			"problemMatcher": [],
 			"label": "che: deploy-on-openshift"
 		}

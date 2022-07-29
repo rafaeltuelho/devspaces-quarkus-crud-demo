@@ -80,7 +80,7 @@ commands:
     id: start-dev
   - exec:
       commandLine: './mvnw clean package -DskipTests -Dquarkus.kubernetes.deploy=true'
-      component: ubi-minimal
+      component: tools
       group:
         kind: run
       label: Build and Deploy on Openshift
