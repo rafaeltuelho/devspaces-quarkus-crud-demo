@@ -1,5 +1,9 @@
 {
     "recommendations": [
-      "redhat.vscode-quarkus"
+      "redhat.vscode-quarkus",
+      "redhat.vscode-openshift-connector",
+      "vscjava.vscode-java-test",
+      "cschleiden.vscode-github-actions",
+      "GabrielBB.vscode-lombok"
     ]
 }
