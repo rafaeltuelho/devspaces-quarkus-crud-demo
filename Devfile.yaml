@@ -21,8 +21,13 @@ components:
           protocol: tcp
           targetPort: 5005
         - exposure: public
-          name: blog-posts-endpoint
-          path: /blog/posts
+          name: Fruits App Home
+          path: /
+          protocol: http
+          targetPort: 8080
+        - exposure: public
+          name: Swagger UI (OpenAPI)
+          path: /swagger-ui
           protocol: http
           targetPort: 8080
       env:
