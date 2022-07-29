@@ -76,6 +76,14 @@ commands:
       workingDir: '${PROJECT_SOURCE}'
     id: start-dev
   - exec:
+      commandLine: './mvnw clean package -DskipTests -Dquarkus.kubernetes.deploy=true'
+      component: ubi-minimal
+      group:
+        kind: run
+      label: Build and Deploy on Openshift
+      workingDir: '${PROJECT_SOURCE}'
+    id: deploy-on-openshift
+  - exec:
       commandLine: ./devspaces-quarkus-crud-demo-1.0.0-SNAPSHOT-runner
       component: ubi-minimal
       group:
