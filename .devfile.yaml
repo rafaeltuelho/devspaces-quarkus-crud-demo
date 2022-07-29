@@ -1,6 +1,13 @@
 schemaVersion: 2.1.0
 metadata:
-  name: java-maven-quarkus-lombok
+  name: devspaces-quarkus-crud-demo
+projects:
+  - name: devspaces-quarkus-crud-demo
+    git:
+      remotes:
+        origin: "https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo"
+      checkoutFrom:
+        revision: main
 components:
   - name: tools
     container:
