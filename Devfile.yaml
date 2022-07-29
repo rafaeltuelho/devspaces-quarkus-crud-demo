@@ -56,7 +56,7 @@ components:
       size: 1G
 commands:
   - exec:
-      commandLine: mvn clean package -DskipTests
+      commandLine: './mvnw clean package -DskipTests'
       component: tools
       group:
         isDefault: true
@@ -64,7 +64,7 @@ commands:
       workingDir: '${PROJECT_SOURCE}'
     id: package
   - exec:
-      commandLine: mvn package -Dnative -Dmaven.test.skip -Dquarkus.native.native-image-xmx=2G
+      commandLine: './mvnw  package -Dnative -Dmaven.test.skip -Dquarkus.native.native-image-xmx=2G'
       component: tools
       group:
         kind: build
@@ -72,7 +72,7 @@ commands:
       workingDir: '${PROJECT_SOURCE}'
     id: package-native
   - exec:
-      commandLine: 'mvn compile quarkus:dev'
+      commandLine: './mvnw compile quarkus:dev'
       component: tools
       group:
         isDefault: true
