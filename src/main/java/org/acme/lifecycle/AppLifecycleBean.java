@@ -19,7 +19,7 @@ public class AppLifecycleBean {
     }
 
     void onStop(@Observes ShutdownEvent ev) {               
-        LOGGER.info("The application is stopping...");
+        LOGGER.info("The application is stopping....");
     }
 
 }
