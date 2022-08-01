@@ -19,7 +19,7 @@
 		},
 		{
 			"type": "che",
-			"command": "./mvnw  package -Dnative -Dmaven.test.skip -Dquarkus.native.native-image-xmx=2G",
+			"command": "./mvnw  package -Dnative -Dmaven.test.skip -Dquarkus.native.native-image-xmx=6G",
 			"workdir": "${PROJECT_SOURCE}",
 			"component": "tools",
 			"problemMatcher": [],
@@ -40,6 +40,18 @@
 			"component": "tools",
 			"problemMatcher": [],
 			"label": "che: deploy-on-openshift"
+		},
+		{
+			"type": "shell",
+			"command": ".vscode/deployPG.sh",
+			// "workdir": "${PROJECT_SOURCE}",
+			// "component": "tools",
+			"problemMatcher": [],
+			"label": "che: deploy-postgresql",
+			"presentation": {
+				"reveal": "always",
+				"panel": "new"
+			}
 		}
 	]
 }

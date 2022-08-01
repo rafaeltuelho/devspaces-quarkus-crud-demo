@@ -31,14 +31,15 @@ components:
       image: 'quay.io/devfile/universal-developer-image:ubi8-latest'
       memoryLimit: 8Gi
       memoryRequest: 6Gi
-      cpuRequest: 750m
+      cpuRequest: 1000m
       cpuLimit: 4000m
       mountSources: true
       sourceMapping: /projects
       volumeMounts:
         - name: m2
           path: /home/user/.m2
-  - container:
+  - name: ubi-minimal
+    container:
       args:
         - '-f'
         - /dev/null
@@ -48,13 +49,12 @@ components:
       memoryLimit: 64M
       mountSources: true
       sourceMapping: /projects
-    name: ubi-minimal
   - name: m2
     volume:
       size: 1G
 commands:
   - exec:
-      commandLine: './mvnw clean package -DskipTests'
+      commandLine: './mvnw clean package'
       component: tools
       group:
         isDefault: true
@@ -62,7 +62,7 @@ commands:
       workingDir: '${PROJECT_SOURCE}'
     id: package
   - exec:
-      commandLine: './mvnw  package -Dnative -Dmaven.test.skip -Dquarkus.native.native-image-xmx=2G'
+      commandLine: './mvnw  package -Dnative -Dmaven.test.skip -Dquarkus.native.native-image-xmx=6G'
       component: tools
       group:
         kind: build
@@ -79,13 +79,23 @@ commands:
       workingDir: '${PROJECT_SOURCE}'
     id: start-dev
   - exec:
-      commandLine: 'oc project ${DEVWORKSPACE_NAMESPACE}; ./mvnw clean package -DskipTests -Dquarkus.kubernetes.deploy=true'
+      commandLine: | 
+        oc project ${DEVWORKSPACE_NAMESPACE}
+        ./mvnw clean package -DskipTests -Dquarkus.kubernetes.deploy=true
       component: tools
       group:
         kind: run
       label: Build and Deploy on Openshift
       workingDir: '${PROJECT_SOURCE}'
     id: deploy-on-openshift
+  - exec:
+      commandLine: '.vscode/deployPG.sh'
+      component: tools
+      group:
+        kind: run
+      label: Deploy a PostgreSQL instance
+      workingDir: '${PROJECT_SOURCE}'
+    id: deploy-postgresql
   - exec:
       commandLine: ./devspaces-quarkus-crud-demo-1.0.0-SNAPSHOT-runner
       component: ubi-minimal
