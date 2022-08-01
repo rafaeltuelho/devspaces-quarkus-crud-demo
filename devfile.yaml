@@ -7,7 +7,7 @@ projects:
       remotes:
         origin: "https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo"
       checkoutFrom:
-        revision: main
+        revision: che-editor
 components:
   - name: tools
     container:
