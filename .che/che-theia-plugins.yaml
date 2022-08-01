@@ -4,5 +4,5 @@
       java.server.launchMode: Standard
       java.jdt.ls.vmargs: -javaagent:/lombok.jar  
     sidecar:
-      memoryLimit: 4Gi
+      memoryLimit: 2Gi
 - id: redhat/quarkus-java11/latest
