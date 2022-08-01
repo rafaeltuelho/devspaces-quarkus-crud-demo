@@ -6,10 +6,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "preLaunchTask": "che: start-dev",
+            // "preLaunchTask": "che: start-dev",
             "type": "java",
             "request": "attach",
-            "hostName": "localhost",
+            "hostName": "127.0.0.1",
             "name": "Debug Quarkus application",
             "port": 5005
         }

@@ -1,10 +1,10 @@
 {
     "recommendations": [
       "redhat.vscode-quarkus",
-      "redhat.vscode-openshift-connector",
+      // "redhat.vscode-openshift-connector",
       "redhat.fabric8-analytics",
-      "vscjava.vscode-java-test",
-      "cschleiden.vscode-github-actions",
-      "GabrielBB.vscode-lombok"
+      // "vscjava.vscode-java-test",
+      // "cschleiden.vscode-github-actions",
+      // "GabrielBB.vscode-lombok"
     ]
 }
