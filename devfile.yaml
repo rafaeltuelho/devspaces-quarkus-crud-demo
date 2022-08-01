@@ -32,7 +32,7 @@ components:
       memoryLimit: 8Gi
       memoryRequest: 6Gi
       cpuRequest: 750m
-      cpuLimit: 2000m
+      cpuLimit: 4000m
       mountSources: true
       sourceMapping: /projects
       volumeMounts:
