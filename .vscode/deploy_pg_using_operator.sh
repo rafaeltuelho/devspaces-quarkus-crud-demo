@@ -14,6 +14,16 @@ then
 fi
 
 echo
+echo "Check if there is PG Cluster already deployed."
+oc get PostgresCluster pg-cluster
+if [[ $? -eq 0 ]] 
+then
+   echo
+   echo "Resource pg-cluster already present in this project!!!"
+   exit 1
+fi
+
+echo
 echo "Create a PostgreSQL instance using ${OPERATOR_API_GROUP}..."
 oc create -f ${PROJECT_SOURCE}/postgresql-crd.yaml
 if [[ $? -eq 0 ]] 

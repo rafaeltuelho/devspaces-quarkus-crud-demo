@@ -89,7 +89,7 @@ commands:
       workingDir: '${PROJECT_SOURCE}'
     id: deploy-on-openshift
   - exec:
-      commandLine: '.vscode/deployPG.sh'
+      commandLine: '.vscode/deploy_pg_using_operator.sh'
       component: tools
       group:
         kind: run
