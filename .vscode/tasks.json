@@ -42,16 +42,12 @@
 			"label": "che: deploy-on-openshift"
 		},
 		{
-			"type": "shell",
+			"type": "che",
 			"command": ".vscode/deployPG.sh",
-			// "workdir": "${PROJECT_SOURCE}",
-			// "component": "tools",
+			"workdir": "${PROJECT_SOURCE}",
+			"component": "tools",
 			"problemMatcher": [],
-			"label": "che: deploy-postgresql",
-			"presentation": {
-				"reveal": "always",
-				"panel": "new"
-			}
+			"label": "che: deploy-postgresql"
 		}
 	]
 }
