@@ -12,6 +12,9 @@ While the code is surprisingly simple, under the hood this is using:
  - Infinispan based caching
  - All safely coordinated by the Narayana Transaction Manager
  - Swagger Open API Spec and UI
+  
+## Start coding on DevWorkspaces
+[![Openshift DevSpaces](https://img.shields.io/badge/DevSpaces-New-red)](https://devspaces-devspaces-demo.apps.axao4okd.eastus.aroapp.io#https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo?new)
 
 ## Requirements
 
