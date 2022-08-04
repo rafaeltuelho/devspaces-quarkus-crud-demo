@@ -140,16 +140,16 @@ rm -rf $OUTPUT_DIR/*.yml
 
 for javaVersion in 11 #17
 do
-  for kind in "" #"native-"
-  do
+  # for kind in "" #"native-"
+  # do
     for deployment_type in "openshift" #"knative" "kubernetes" "minikube" 
     do
-      for project in ""
-      do
-        process_quarkus_project $project $deployment_type $javaVersion $kind
-      done
+      # for project in ""
+      # do
+        process_quarkus_project "." $deployment_type $javaVersion $kind
+      # done
     done
-  done
+  # done
 done
 
 ## Handle the monitoring
