@@ -43,7 +43,7 @@
 		},
 		{
 			"type": "che",
-			"command": ".vscode/deployPG.sh",
+			"command": ".vscode/deploy_pg_using_operator.sh",
 			"workdir": "${PROJECT_SOURCE}",
 			"component": "tools",
 			"problemMatcher": [],
