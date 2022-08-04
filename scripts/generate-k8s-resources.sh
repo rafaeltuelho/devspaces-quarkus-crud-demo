@@ -45,6 +45,7 @@ do_build() {
   $project/mvnw -f $project/pom.xml versions:set clean package \
     -DskipTests \
     -DnewVersion=$tag \
+    -Dquarkus.container-image.builder=docker \
     -Dquarkus.container-image.tag=$tag \
     -Dquarkus.kubernetes.deployment-target=$deployment_type \
     -Dquarkus.kubernetes.version=$tag \
