@@ -194,8 +194,9 @@ jobs:
         if: (matrix.arch == 'amd64') || (matrix.kind != 'native-')
         working-directory: .
         run: "docker push -a ${{ env.IMAGE_BASE_NAME }}/${{ matrix.project }}"
-  
-  create-app-multiarch-manifests:
+
+
+    create-app-multiarch-manifests:
     if: ((github.event_name == 'workflow_dispatch') || ((github.event_name == 'workflow_run') && ((github.event.workflow_run.event == 'push') || (github.event.workflow_run.event == 'workflow_dispatch')) && (github.event.workflow_run.conclusion == 'success'))) && ((github.repository == 'quarkusio/quarkus-super-heroes') && ((github.event.workflow_run.head_branch == 'main') || (github.event.workflow_run.head_branch == 'rhbq-2.7')))
     needs: push-app-images
     runs-on: ubuntu-latest
@@ -206,7 +207,7 @@ jobs:
           - '17'
         kind:
           - ""
-#          - "native-"
+          #- "native-"
         project:
           - devspaces-quarkus-crud-demo
     name: Create app multiarch manifests (${{ matrix.project }}-${{ matrix.kind }}java${{ matrix.java }})
