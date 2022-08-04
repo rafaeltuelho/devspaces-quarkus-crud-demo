@@ -195,17 +195,21 @@ jobs:
         working-directory: .
         run: "docker push -a ${{ env.IMAGE_BASE_NAME }}/${{ matrix.project }}"
 
-  push-ui-images:
-    if: ((github.event_name == 'workflow_dispatch') || ((github.event_name == 'workflow_run') && ((github.event.workflow_run.event == 'push') || (github.event.workflow_run.event == 'workflow_dispatch')) && (github.event.workflow_run.conclusion == 'success'))) && ((github.repository == 'rafaeltuelho/devspaces-quarkus-crud-demo') && ((github.event.workflow_run.head_branch == 'main') || (github.event.workflow_run.head_branch == 'rhbq-2.7')))
-    needs:
-      - build-jvm-images
-      # - build-native-images
+  create-app-multiarch-manifests:
+    if: ((github.event_name == 'workflow_dispatch') || ((github.event_name == 'workflow_run') && ((github.event.workflow_run.event == 'push') || (github.event.workflow_run.event == 'workflow_dispatch')) && (github.event.workflow_run.conclusion == 'success'))) && ((github.repository == 'quarkusio/quarkus-super-heroes') && ((github.event.workflow_run.head_branch == 'main') || (github.event.workflow_run.head_branch == 'rhbq-2.7')))
+    needs: push-app-images
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        arch:
-          - amd64
-          # - arm64
+        java:
+          - '11'
+          - '17'
+        kind:
+          - ""
+#          - "native-"
+        project:
+          - devspaces-quarkus-crud-demo
+    name: Create app multiarch manifests (${{ matrix.project }}-${{ matrix.kind }}java${{ matrix.java }})
     steps:
       - name: Calculate Branch (workflow_run event)
         if: github.event_name == 'workflow_run'
@@ -227,28 +231,29 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
-          java-version: 17
+          java-version: ${{ matrix.java }}
           distribution: temurin
           cache: maven
 
-      - name: Create env vars (main branch)
+      - name: Create env vars
+        working-directory: .
+        run: |
+          echo "QUARKUS_VERSION=$(./mvnw help:evaluate -Dexpression=quarkus.platform.version -q -DforceStdout)" >> $GITHUB_ENV &&
+          echo "APP_VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+
+      - name: Create container tags (main branch)
         if: env.BRANCH == 'main'
         working-directory: .
         run: |
-          echo "CONTAINER_TAG=${{ env.LATEST_IMAGE_TAG }}-${{ matrix.arch }}" >> $GITHUB_ENV &&
-          echo "APP_VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
+          echo "CONTAINER_TAG=${{ env.APP_VERSION }}-quarkus-${{ env.QUARKUS_VERSION }}-${{ matrix.kind }}java${{ matrix.java }}" >> $GITHUB_ENV &&
+          echo "ADDITIONAL_TAG=${{ matrix.kind }}java${{ matrix.java }}-${{ env.LATEST_IMAGE_TAG }}" >> $GITHUB_ENV
 
-      - name: Create env vars (other branch)
+      - name: Create container tags (other branch)
         if: env.BRANCH != 'main'
         working-directory: .
         run: |
-          echo "CONTAINER_TAG=${{ env.LATEST_IMAGE_TAG }}-${{ env.BRANCH }}-${{ matrix.arch }}" >> $GITHUB_ENV &&
-          echo "APP_VERSION=$(./mvnw help:evaluate -Dexpression=project.version -q -DforceStdout)-${{ env.BRANCH }}" >> $GITHUB_ENV
-
-      # - name: Get Saved UI Image (${{ matrix.arch }})
-      #   uses: ishworkh/docker-image-artifact-download@v1
-      #   with:
-      #     image: "${{ env.IMAGE_BASE_NAME }}/ui-super-heroes:${{ env.CONTAINER_TAG }}"
+          echo "CONTAINER_TAG=${{ env.APP_VERSION }}-quarkus-${{ env.QUARKUS_VERSION }}-${{ matrix.kind }}java${{ matrix.java }}" >> $GITHUB_ENV &&
+          echo "ADDITIONAL_TAG=${{ matrix.kind }}java${{ matrix.java }}-${{ env.LATEST_IMAGE_TAG }}-${{ env.BRANCH }}" >> $GITHUB_ENV
 
       - name: Login to quay
         uses: docker/login-action@v2
@@ -257,11 +262,33 @@ jobs:
           username: ${{ secrets.QUAY_REPO_USERNAME }}
           password: ${{ secrets.QUAY_REPO_TOKEN }}
 
+      # - name: Create and push multi-arch JVM manifests
+      #   shell: bash
+      #   run: |
+      #     docker manifest create ${{ env.IMAGE_BASE_NAME }}/${{ matrix.project }}:${{ env.CONTAINER_TAG }} \
+      #       -a ${{ env.IMAGE_BASE_NAME }}/${{ matrix.project }}:${{ env.CONTAINER_TAG }}-amd64 \
+      #       -a ${{ env.IMAGE_BASE_NAME }}/${{ matrix.project }}:${{ env.CONTAINER_TAG }}-arm64
+      #     docker manifest push ${{ env.IMAGE_BASE_NAME }}/${{ matrix.project }}:${{ env.CONTAINER_TAG }}
+      #     docker manifest create ${{ env.IMAGE_BASE_NAME }}/${{ matrix.project }}:${{ env.ADDITIONAL_TAG }} \
+      #       -a ${{ env.IMAGE_BASE_NAME }}/${{ matrix.project }}:${{ env.ADDITIONAL_TAG }}-amd64 \
+      #       -a ${{ env.IMAGE_BASE_NAME }}/${{ matrix.project }}:${{ env.ADDITIONAL_TAG }}-arm64
+      #     docker manifest push ${{ env.IMAGE_BASE_NAME }}/${{ matrix.project }}:${{ env.ADDITIONAL_TAG }}
+
+     - name: Create and push single-arch native manifests
+       if: matrix.kind == 'native-'
+       shell: bash
+       run: |
+         docker manifest create ${{ env.IMAGE_BASE_NAME }}/${{ matrix.project }}:${{ env.CONTAINER_TAG }} \
+           -a ${{ env.IMAGE_BASE_NAME }}/${{ matrix.project }}:${{ env.CONTAINER_TAG }}-amd64
+         docker manifest push ${{ env.IMAGE_BASE_NAME }}/${{ matrix.project }}:${{ env.CONTAINER_TAG }}
+         docker manifest create ${{ env.IMAGE_BASE_NAME }}/${{ matrix.project }}:${{ env.ADDITIONAL_TAG }} \
+           -a ${{ env.IMAGE_BASE_NAME }}/${{ matrix.project }}:${{ env.ADDITIONAL_TAG }}-amd64
+         docker manifest push ${{ env.IMAGE_BASE_NAME }}/${{ matrix.project }}:${{ env.ADDITIONAL_TAG }}
+
   deploy-resources-workflow-run:
     if: ((github.event_name == 'workflow_run') && ((github.event.workflow_run.event == 'push') || (github.event.workflow_run.event == 'workflow_dispatch')) && (github.event.workflow_run.conclusion == 'success') && (github.repository == 'rafaeltuelho/devspaces-quarkus-crud-demo')) && ((github.event.workflow_run.head_branch == 'main') || (github.event.workflow_run.head_branch == 'rhbq-2.7'))
     needs:
       - create-app-multiarch-manifests
-      - create-ui-multiarch-manifests
     uses: rafaeltuelho/devspaces-quarkus-crud-demo/.github/workflows/create-deploy-resources.yaml@main
     secrets: inherit
     with:
@@ -272,7 +299,6 @@ jobs:
     if: ((github.event_name == 'workflow_dispatch') && (github.repository == 'rafaeltuelho/devspaces-quarkus-crud-demo')) && ((github.ref_name == 'main') || (github.ref_name == 'rhbq-2.7'))
     needs:
       - create-app-multiarch-manifests
-      - create-ui-multiarch-manifests
     uses: rafaeltuelho/devspaces-quarkus-crud-demo/.github/workflows/create-deploy-resources.yaml@main
     secrets: inherit
     with:
