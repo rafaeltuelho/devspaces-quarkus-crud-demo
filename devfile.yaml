@@ -54,7 +54,7 @@ components:
       size: 1G
 commands:
   - exec:
-      commandLine: './mvnw clean package -Dquarkus.container-image.build=false'
+      commandLine: './mvnw clean package -Dquarkus.container-image.build=false -Dquarkus.container-image.builder=openshift'
       component: tools
       group:
         isDefault: true
@@ -70,7 +70,7 @@ commands:
       workingDir: '${PROJECT_SOURCE}'
     id: package-native
   - exec:
-      commandLine: './mvnw compile quarkus:dev'
+      commandLine: './mvnw compile quarkus:dev -Dquarkus.container-image.build=false -Dquarkus.container-image.builder=openshift'
       component: tools
       group:
         isDefault: true

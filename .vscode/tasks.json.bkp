@@ -3,7 +3,7 @@
 	"tasks": [
 		{
 			"type": "che",
-			"command": "./mvnw compile quarkus:dev",
+			"command": "./mvnw compile quarkus:dev -Dquarkus.container-image.build=false",
 			"workdir": "${PROJECT_SOURCE}",
 			"component": "tools",
 			"problemMatcher": [],
