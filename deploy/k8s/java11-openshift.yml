@@ -1,0 +1,370 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    app.openshift.io/vcs-url: https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo
+    app.openshift.io/vcs-ref: main
+    app.quarkus.io/commit-id: 496f4914e318e246eb9ff7c1d4404b13886f1c4b
+    app.quarkus.io/build-timestamp: 2022-08-04 - 20:25:18 +0000
+  labels:
+    app.kubernetes.io/name: devspaces-quarkus-crud-demo
+    app.kubernetes.io/version: java11-latest
+    app.openshift.io/runtime: quarkus
+  name: devspaces-quarkus-crud-demo
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/name: devspaces-quarkus-crud-demo
+    app.kubernetes.io/version: java11-latest
+  type: ClusterIP
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: default_view
+roleRef:
+  kind: ClusterRole
+  apiGroup: rbac.authorization.k8s.io
+  name: view
+subjects:
+  - kind: ServiceAccount
+    name: default
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  annotations:
+    app.openshift.io/vcs-url: https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo
+    app.openshift.io/vcs-ref: main
+    app.quarkus.io/commit-id: 496f4914e318e246eb9ff7c1d4404b13886f1c4b
+    app.quarkus.io/build-timestamp: 2022-08-04 - 20:25:18 +0000
+  labels:
+    app.openshift.io/runtime: quarkus
+    app.kubernetes.io/version: java11-latest
+    app.kubernetes.io/name: devspaces-quarkus-crud-demo
+  name: devspaces-quarkus-crud-demo
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - from:
+        kind: DockerImage
+        name: quay.io/rafaeltuelho/devspaces-quarkus-crud-demo:java11-latest
+      importPolicy: {}
+      name: java11-latest
+      referencePolicy:
+        type: Source
+---
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    app.openshift.io/vcs-url: https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo
+    app.openshift.io/vcs-ref: main
+    app.quarkus.io/commit-id: 496f4914e318e246eb9ff7c1d4404b13886f1c4b
+    app.quarkus.io/build-timestamp: 2022-08-04 - 20:25:18 +0000
+  labels:
+    app.kubernetes.io/name: devspaces-quarkus-crud-demo
+    app.kubernetes.io/version: java11-latest
+    app.openshift.io/runtime: quarkus
+  name: devspaces-quarkus-crud-demo
+spec:
+  replicas: 1
+  selector:
+    app.kubernetes.io/version: java11-latest
+    app.kubernetes.io/name: devspaces-quarkus-crud-demo
+  template:
+    metadata:
+      annotations:
+        app.openshift.io/vcs-url: https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo
+        app.openshift.io/vcs-ref: main
+        app.quarkus.io/commit-id: 496f4914e318e246eb9ff7c1d4404b13886f1c4b
+        app.quarkus.io/build-timestamp: 2022-08-04 - 20:25:18 +0000
+      labels:
+        app.openshift.io/runtime: quarkus
+        app.kubernetes.io/version: java11-latest
+        app.kubernetes.io/name: devspaces-quarkus-crud-demo
+    spec:
+      containers:
+        - env:
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          image: quay.io/rafaeltuelho/devspaces-quarkus-crud-demo:java11-latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /q/health/live
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 0
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 10
+          name: devspaces-quarkus-crud-demo
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /q/health/ready
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 0
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 10
+          resources:
+            limits:
+              memory: 768Mi
+            requests:
+              memory: 256Mi
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    app.openshift.io/vcs-url: https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo
+    app.openshift.io/vcs-ref: main
+    app.quarkus.io/commit-id: 496f4914e318e246eb9ff7c1d4404b13886f1c4b
+    app.quarkus.io/build-timestamp: 2022-08-04 - 20:25:18 +0000
+  labels:
+    app.kubernetes.io/name: devspaces-quarkus-crud-demo
+    app.kubernetes.io/version: java11-latest
+    app.openshift.io/runtime: quarkus
+  name: devspaces-quarkus-crud-demo
+spec:
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: devspaces-quarkus-crud-demo
+---
+apiVersion: binding.operators.coreos.com/v1alpha1
+kind: ServiceBinding
+metadata:
+  name: devspaces-quarkus-crud-demo-postgresql
+spec:
+  application:
+    group: apps.openshift.io
+    name: devspaces-quarkus-crud-demo
+    version: v1
+    kind: DeploymentConfig
+  services:
+    - group: postgres-operator.crunchydata.com
+      version: v1beta1
+      kind: PostgresCluster
+      name: pg-cluster
+  detectBindingResources: false
+  bindAsFiles: true
+---
+apiVersion: binding.operators.coreos.com/v1alpha1
+kind: ServiceBinding
+metadata:
+  name: devspaces-quarkus-crud-demo-postgresql
+spec:
+  application:
+    group: apps.openshift.io
+    name: devspaces-quarkus-crud-demo
+    version: v1
+    kind: DeploymentConfig
+  services:
+    - group: postgres-operator.crunchydata.com
+      version: v1beta1
+      kind: PostgresCluster
+      name: pg-cluster
+  detectBindingResources: false
+  bindAsFiles: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    app.openshift.io/vcs-url: https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo
+    app.openshift.io/vcs-ref: main
+    app.quarkus.io/commit-id: 496f4914e318e246eb9ff7c1d4404b13886f1c4b
+    app.quarkus.io/build-timestamp: 2022-08-04 - 20:25:18 +0000
+  labels:
+    app.kubernetes.io/name: devspaces-quarkus-crud-demo
+    app.kubernetes.io/version: java11-latest
+    app.openshift.io/runtime: quarkus
+  name: devspaces-quarkus-crud-demo
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/name: devspaces-quarkus-crud-demo
+    app.kubernetes.io/version: java11-latest
+  type: ClusterIP
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: default_view
+roleRef:
+  kind: ClusterRole
+  apiGroup: rbac.authorization.k8s.io
+  name: view
+subjects:
+  - kind: ServiceAccount
+    name: default
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  annotations:
+    app.openshift.io/vcs-url: https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo
+    app.openshift.io/vcs-ref: main
+    app.quarkus.io/commit-id: 496f4914e318e246eb9ff7c1d4404b13886f1c4b
+    app.quarkus.io/build-timestamp: 2022-08-04 - 20:25:18 +0000
+  labels:
+    app.openshift.io/runtime: quarkus
+    app.kubernetes.io/version: java11-latest
+    app.kubernetes.io/name: devspaces-quarkus-crud-demo
+  name: devspaces-quarkus-crud-demo
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - from:
+        kind: DockerImage
+        name: quay.io/rafaeltuelho/devspaces-quarkus-crud-demo:java11-latest
+      importPolicy: {}
+      name: java11-latest
+      referencePolicy:
+        type: Source
+---
+apiVersion: apps.openshift.io/v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    app.openshift.io/vcs-url: https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo
+    app.openshift.io/vcs-ref: main
+    app.quarkus.io/commit-id: 496f4914e318e246eb9ff7c1d4404b13886f1c4b
+    app.quarkus.io/build-timestamp: 2022-08-04 - 20:25:18 +0000
+  labels:
+    app.kubernetes.io/name: devspaces-quarkus-crud-demo
+    app.kubernetes.io/version: java11-latest
+    app.openshift.io/runtime: quarkus
+  name: devspaces-quarkus-crud-demo
+spec:
+  replicas: 1
+  selector:
+    app.kubernetes.io/version: java11-latest
+    app.kubernetes.io/name: devspaces-quarkus-crud-demo
+  template:
+    metadata:
+      annotations:
+        app.openshift.io/vcs-url: https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo
+        app.openshift.io/vcs-ref: main
+        app.quarkus.io/commit-id: 496f4914e318e246eb9ff7c1d4404b13886f1c4b
+        app.quarkus.io/build-timestamp: 2022-08-04 - 20:25:18 +0000
+      labels:
+        app.openshift.io/runtime: quarkus
+        app.kubernetes.io/version: java11-latest
+        app.kubernetes.io/name: devspaces-quarkus-crud-demo
+    spec:
+      containers:
+        - env:
+            - name: KUBERNETES_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          image: quay.io/rafaeltuelho/devspaces-quarkus-crud-demo:java11-latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /q/health/live
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 0
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 10
+          name: devspaces-quarkus-crud-demo
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /q/health/ready
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 0
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 10
+          resources:
+            limits:
+              memory: 768Mi
+            requests:
+              memory: 256Mi
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    app.openshift.io/vcs-url: https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo
+    app.openshift.io/vcs-ref: main
+    app.quarkus.io/commit-id: 496f4914e318e246eb9ff7c1d4404b13886f1c4b
+    app.quarkus.io/build-timestamp: 2022-08-04 - 20:25:18 +0000
+  labels:
+    app.kubernetes.io/name: devspaces-quarkus-crud-demo
+    app.kubernetes.io/version: java11-latest
+    app.openshift.io/runtime: quarkus
+  name: devspaces-quarkus-crud-demo
+spec:
+  port:
+    targetPort: 8080
+  to:
+    kind: Service
+    name: devspaces-quarkus-crud-demo
+---
+apiVersion: binding.operators.coreos.com/v1alpha1
+kind: ServiceBinding
+metadata:
+  name: devspaces-quarkus-crud-demo-postgresql
+spec:
+  application:
+    group: apps.openshift.io
+    name: devspaces-quarkus-crud-demo
+    version: v1
+    kind: DeploymentConfig
+  services:
+    - group: postgres-operator.crunchydata.com
+      version: v1beta1
+      kind: PostgresCluster
+      name: pg-cluster
+  detectBindingResources: false
+  bindAsFiles: true
+---
+apiVersion: binding.operators.coreos.com/v1alpha1
+kind: ServiceBinding
+metadata:
+  name: devspaces-quarkus-crud-demo-postgresql
+spec:
+  application:
+    group: apps.openshift.io
+    name: devspaces-quarkus-crud-demo
+    version: v1
+    kind: DeploymentConfig
+  services:
+    - group: postgres-operator.crunchydata.com
+      version: v1beta1
+      kind: PostgresCluster
+      name: pg-cluster
+  detectBindingResources: false
+  bindAsFiles: true
