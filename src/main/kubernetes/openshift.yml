@@ -1,0 +1,54 @@
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: default_view
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+subjects:
+  - kind: ServiceAccount
+    name: default
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: rest-fights
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - name: java11-latest
+      annotations: null
+      from:
+        kind: DockerImage
+        name: 'quay.io/quarkus-super-heroes/rest-fights:java11-latest'
+      importPolicy: {}
+      referencePolicy:
+        type: Source
+    - name: java17-latest
+      annotations: null
+      from:
+        kind: DockerImage
+        name: 'quay.io/quarkus-super-heroes/rest-fights:java17-latest'
+      importPolicy: { }
+      referencePolicy:
+        type: Source
+    - name: native-java11-latest
+      annotations: null
+      from:
+        kind: DockerImage
+        name: 'quay.io/quarkus-super-heroes/rest-fights:native-java11-latest'
+      importPolicy: { }
+      referencePolicy:
+        type: Source
+    - name: native-java17-latest
+      annotations: null
+      from:
+        kind: DockerImage
+        name: 'quay.io/quarkus-super-heroes/rest-fights:native-java17-latest'
+      importPolicy: { }
+      referencePolicy:
+        type: Source

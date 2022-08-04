@@ -44,7 +44,7 @@ jobs:
       matrix:
         java:
           - '11'
-          - '17'
+          # - '17'
         # project:
         #   - devspaces-quarkus-crud-demo
     name: "build-test-${{ matrix.project }}-${{ matrix.java }}"
