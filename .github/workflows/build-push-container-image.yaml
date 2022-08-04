@@ -171,11 +171,11 @@ jobs:
           echo "CONTAINER_TAG=${{ env.APP_VERSION }}-quarkus-${{ env.QUARKUS_VERSION }}-${{ matrix.kind }}java${{ matrix.java }}" >> $GITHUB_ENV &&
           echo "ADDITIONAL_TAG=${{ matrix.kind }}java${{ matrix.java }}-${{ env.LATEST_IMAGE_TAG }}-${{ env.BRANCH }}" >> $GITHUB_ENV
 
-      - name: Get saved images (${{ matrix.project }}-${{ matrix.kind }}java${{ matrix.java }}-${{ matrix.arch }})
-        if: (matrix.arch == 'amd64') || (matrix.kind != 'native-')
-        uses: ishworkh/docker-image-artifact-download@v1
-        with:
-          image: "${{ env.IMAGE_BASE_NAME }}/${{ matrix.project }}:${{ env.CONTAINER_TAG }}-${{ matrix.arch }}"
+      # - name: Get saved images (${{ matrix.project }}-${{ matrix.kind }}java${{ matrix.java }}-${{ matrix.arch }})
+      #   if: (matrix.arch == 'amd64') || (matrix.kind != 'native-')
+      #   uses: ishworkh/docker-image-artifact-download@v1
+      #   with:
+      #     image: "${{ env.IMAGE_BASE_NAME }}/${{ matrix.project }}:${{ env.CONTAINER_TAG }}-${{ matrix.arch }}"
 
       - name: Login to quay
         if: (matrix.arch == 'amd64') || (matrix.kind != 'native-')
