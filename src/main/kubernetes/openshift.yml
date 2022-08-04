@@ -15,7 +15,7 @@ subjects:
 apiVersion: image.openshift.io/v1
 kind: ImageStream
 metadata:
-  name: rest-fights
+  name: devspaces-quarkus-crud-demo
 spec:
   lookupPolicy:
     local: false
@@ -24,31 +24,10 @@ spec:
       annotations: null
       from:
         kind: DockerImage
-        name: 'quay.io/quarkus-super-heroes/rest-fights:java11-latest'
+        name: 'quay.io/rafaeltuelho/devspaces-quarkus-crud-demo:java11-latest'
       importPolicy: {}
       referencePolicy:
         type: Source
-    - name: java17-latest
-      annotations: null
-      from:
-        kind: DockerImage
-        name: 'quay.io/quarkus-super-heroes/rest-fights:java17-latest'
-      importPolicy: { }
-      referencePolicy:
-        type: Source
-    - name: native-java11-latest
-      annotations: null
-      from:
-        kind: DockerImage
-        name: 'quay.io/quarkus-super-heroes/rest-fights:native-java11-latest'
-      importPolicy: { }
-      referencePolicy:
-        type: Source
-    - name: native-java17-latest
-      annotations: null
-      from:
-        kind: DockerImage
-        name: 'quay.io/quarkus-super-heroes/rest-fights:native-java17-latest'
       importPolicy: { }
       referencePolicy:
         type: Source
