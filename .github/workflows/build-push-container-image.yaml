@@ -98,10 +98,10 @@ jobs:
             -Dquarkus.docker.dockerfile-jvm-path=src/main/docker/${{ env.JVM_DOCKERFILE }} \
             -Dquarkus.docker.buildx.platform=linux/${{ matrix.arch }}
 
-      - name: Save JVM Image (${{ matrix.project }}-java${{ matrix.java }}-${{ matrix.arch }})
-        uses: ishworkh/docker-image-artifact-upload@v1
-        with:
-          image: "${{ env.IMAGE_BASE_NAME }}/${{ matrix.project }}:${{ env.CONTAINER_TAG }}-${{ matrix.arch }}"
+      # - name: Save JVM Image (${{ matrix.project }}-java${{ matrix.java }}-${{ matrix.arch }})
+      #   uses: ishworkh/docker-image-artifact-upload@v1
+      #   with:
+      #     image: "${{ env.IMAGE_BASE_NAME }}/${{ matrix.project }}:${{ env.CONTAINER_TAG }}-${{ matrix.arch }}"
 
   push-app-images:
     if: ((github.event_name == 'workflow_dispatch') || ((github.event_name == 'workflow_run') && ((github.event.workflow_run.event == 'push') || (github.event.workflow_run.event == 'workflow_dispatch')) && (github.event.workflow_run.conclusion == 'success'))) && ((github.repository == 'rafaeltuelho/devspaces-quarkus-crud-demo') && ((github.event.workflow_run.head_branch == 'main') || (github.event.workflow_run.head_branch == 'rhbq-2.7')))
