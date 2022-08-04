@@ -1,0 +1,63 @@
+name: Basic build and test
+
+env:
+  MANDREL_VERSION: "22.0.0.2-Final"
+
+on:
+  push:
+    paths-ignore:
+      - 'deploy/**'
+      - '**/*.md'
+      - 'docs/**'
+      - '**/images/**'
+      - '.github/dependabot.yml'
+      - 'scripts/deploy-to-azure-containerapps.sh'
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+    branches:
+      - main
+    paths-ignore:
+      - 'deploy/**'
+      - '**/*.md'
+      - 'docs/**'
+      - '**/images/**'
+      - '.github/dependabot.yml'
+      - 'scripts/deploy-to-azure-containerapps.sh'
+  workflow_dispatch:
+
+concurrency:
+  group: "workflow = ${{ github.workflow }}, ref = ${{ github.event.ref }}, pr = ${{ github.event.pull_request.id }}"
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  jvm-build-test:
+    runs-on: ubuntu-latest
+    if: github.repository == 'rafaeltuelho/devspaces-quarkus-crud-demo'
+    strategy:
+      fail-fast: false
+      matrix:
+        java:
+          - '11'
+          - '17'
+        # project:
+        #   - devspaces-quarkus-crud-demo
+    name: "build-test-${{ matrix.project }}-${{ matrix.java }}"
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Java ${{ matrix.java }}
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ matrix.java }}
+          distribution: temurin
+          cache: maven
+
+      - name: "build-test-jvm-${{ matrix.project }}-java-${{ matrix.java }}"
+        working-directory: .
+        run: ./mvnw -B clean verify -Dquarkus.http.host=0.0.0.0 -Dmaven.compiler.release=${{ matrix.java }}
