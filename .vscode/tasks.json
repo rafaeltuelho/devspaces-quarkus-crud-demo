@@ -11,7 +11,7 @@
 		},
 		{
 			"type": "che",
-			"command": "./mvnw clean package -DskipTests",
+			"command": "./mvnw clean package -DskipTests -Dquarkus.container-image.build=false",
 			"workdir": "${PROJECT_SOURCE}",
 			"component": "tools",
 			"problemMatcher": [],
@@ -35,7 +35,7 @@
 		},
 		{
 			"type": "che",
-			"command": "oc project ${DEVWORKSPACE_NAMESPACE}; ./mvnw clean package -DskipTests -Dquarkus.kubernetes.deploy=true",
+			"command": "oc project ${DEVWORKSPACE_NAMESPACE}; ./mvnw clean package -DskipTests -Dquarkus.kubernetes.deploy=true -Dquarkus.container-image.builder=s2i",
 			"workdir": "${PROJECT_SOURCE}",
 			"component": "tools",
 			"problemMatcher": [],

@@ -54,7 +54,7 @@ components:
       size: 1G
 commands:
   - exec:
-      commandLine: './mvnw clean package'
+      commandLine: './mvnw clean package -Dquarkus.container-image.build=false'
       component: tools
       group:
         isDefault: true
@@ -62,7 +62,7 @@ commands:
       workingDir: '${PROJECT_SOURCE}'
     id: package
   - exec:
-      commandLine: './mvnw  package -Dnative -Dmaven.test.skip -Dquarkus.native.native-image-xmx=6G'
+      commandLine: './mvnw package -Dnative -Dmaven.test.skip -Dquarkus.native.native-image-xmx=6G'
       component: tools
       group:
         kind: build
@@ -81,7 +81,7 @@ commands:
   - exec:
       commandLine: | 
         oc project ${DEVWORKSPACE_NAMESPACE}
-        ./mvnw clean package -DskipTests -Dquarkus.kubernetes.deploy=true
+        ./mvnw clean package -DskipTests -Dquarkus.kubernetes.deploy=true -Dquarkus.container-image.builder=s2i
       component: tools
       group:
         kind: run
