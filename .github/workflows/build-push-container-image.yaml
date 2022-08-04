@@ -94,6 +94,7 @@ jobs:
             -Dquarkus.http.host=0.0.0.0 \
             -Dquarkus.container-image.build=true \
             -Dquarkus.container-image.push=false \
+            -Dquarkus.container-image.builder=docker \
             -Dquarkus.container-image.tag=${{ env.CONTAINER_TAG }}-${{ matrix.arch }} \
             -Dquarkus.docker.dockerfile-jvm-path=src/main/docker/${{ env.JVM_DOCKERFILE }} \
             -Dquarkus.docker.buildx.platform=linux/${{ matrix.arch }}

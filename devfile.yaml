@@ -79,9 +79,7 @@ commands:
       workingDir: '${PROJECT_SOURCE}'
     id: start-dev
   - exec:
-      commandLine: | 
-        oc project ${DEVWORKSPACE_NAMESPACE}
-        ./mvnw clean package -DskipTests -Dquarkus.kubernetes.deploy=true -Dquarkus.container-image.builder=s2i
+      commandLine: 'oc project ${DEVWORKSPACE_NAMESPACE}; ./mvnw clean package -DskipTests -Dquarkus.kubernetes.deploy=true -Dquarkus.container-image.builder=openshift'
       component: tools
       group:
         kind: run
