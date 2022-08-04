@@ -3,7 +3,7 @@
 	"tasks": [
 		{
 			"type": "che",
-			"command": "./mvnw compile quarkus:dev -Dquarkus.container-image.build=false",
+			"command": "./mvnw compile quarkus:dev",
 			"workdir": "${PROJECT_SOURCE}",
 			"component": "tools",
 			"problemMatcher": [],
@@ -11,35 +11,11 @@
 		},
 		{
 			"type": "che",
-			"command": "./mvnw clean package -DskipTests -Dquarkus.container-image.build=false",
+			"command": "./mvnw clean package -Dquarkus.container-image.build=false",
 			"workdir": "${PROJECT_SOURCE}",
 			"component": "tools",
 			"problemMatcher": [],
 			"label": "che: package"
-		},
-		{
-			"type": "che",
-			"command": "./mvnw  package -Dnative -Dmaven.test.skip -Dquarkus.native.native-image-xmx=6G",
-			"workdir": "${PROJECT_SOURCE}",
-			"component": "tools",
-			"problemMatcher": [],
-			"label": "che: package-native"
-		},
-		{
-			"type": "che",
-			"command": "./devspaces-quarkus-crud-demo-1.0.0-SNAPSHOT-runner",
-			"workdir": "${PROJECT_SOURCE}/target",
-			"component": "ubi-minimal",
-			"problemMatcher": [],
-			"label": "che: start-native"
-		},
-		{
-			"type": "che",
-			"command": "oc project ${DEVWORKSPACE_NAMESPACE}; ./mvnw clean package -DskipTests -Dquarkus.kubernetes.deploy=true -Dquarkus.container-image.builder=openshift",
-			"workdir": "${PROJECT_SOURCE}",
-			"component": "tools",
-			"problemMatcher": [],
-			"label": "che: deploy-on-openshift"
 		},
 		{
 			"type": "che",
@@ -48,6 +24,14 @@
 			"component": "tools",
 			"problemMatcher": [],
 			"label": "che: deploy-postgresql"
+		},
+		{
+			"type": "che",
+			"command": "oc project ${DEVWORKSPACE_NAMESPACE}; ./mvnw clean package -DskipTests -Dquarkus.kubernetes.deploy=true -Dquarkus.container-image.builder=openshift",
+			"workdir": "${PROJECT_SOURCE}",
+			"component": "tools",
+			"problemMatcher": [],
+			"label": "che: deploy-on-openshift"
 		}
 	]
 }
