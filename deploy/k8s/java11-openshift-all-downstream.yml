@@ -5,7 +5,7 @@ metadata:
   annotations:
     app.openshift.io/vcs-url: https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo
     app.openshift.io/vcs-ref: main
-    app.quarkus.io/build-timestamp: 2022-08-05 - 01:14:21 +0000
+    app.quarkus.io/build-timestamp: 2022-08-05 - 14:19:37 +0000
   labels:
     app.kubernetes.io/name: devspaces-quarkus-crud-demo
     app.kubernetes.io/version: java11-latest
@@ -39,11 +39,11 @@ metadata:
   annotations:
     app.openshift.io/vcs-url: https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo
     app.openshift.io/vcs-ref: main
-    app.quarkus.io/build-timestamp: 2022-08-05 - 01:14:21 +0000
+    app.quarkus.io/build-timestamp: 2022-08-05 - 14:19:37 +0000
   labels:
     app.openshift.io/runtime: quarkus
-    app.kubernetes.io/name: devspaces-quarkus-crud-demo
     app.kubernetes.io/version: java11-latest
+    app.kubernetes.io/name: devspaces-quarkus-crud-demo
   name: devspaces-quarkus-crud-demo
 spec:
   lookupPolicy:
@@ -63,7 +63,7 @@ metadata:
   annotations:
     app.openshift.io/vcs-url: https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo
     app.openshift.io/vcs-ref: main
-    app.quarkus.io/build-timestamp: 2022-08-05 - 01:14:21 +0000
+    app.quarkus.io/build-timestamp: 2022-08-05 - 14:19:37 +0000
   labels:
     app.kubernetes.io/name: devspaces-quarkus-crud-demo
     app.kubernetes.io/version: java11-latest
@@ -72,18 +72,18 @@ metadata:
 spec:
   replicas: 1
   selector:
-    app.kubernetes.io/name: devspaces-quarkus-crud-demo
     app.kubernetes.io/version: java11-latest
+    app.kubernetes.io/name: devspaces-quarkus-crud-demo
   template:
     metadata:
       annotations:
         app.openshift.io/vcs-url: https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo
         app.openshift.io/vcs-ref: main
-        app.quarkus.io/build-timestamp: 2022-08-05 - 01:14:21 +0000
+        app.quarkus.io/build-timestamp: 2022-08-05 - 14:19:37 +0000
       labels:
         app.openshift.io/runtime: quarkus
-        app.kubernetes.io/name: devspaces-quarkus-crud-demo
         app.kubernetes.io/version: java11-latest
+        app.kubernetes.io/name: devspaces-quarkus-crud-demo
     spec:
       containers:
         - env:
@@ -130,7 +130,7 @@ metadata:
   annotations:
     app.openshift.io/vcs-url: https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo
     app.openshift.io/vcs-ref: main
-    app.quarkus.io/build-timestamp: 2022-08-05 - 01:14:21 +0000
+    app.quarkus.io/build-timestamp: 2022-08-05 - 14:19:37 +0000
   labels:
     app.kubernetes.io/name: devspaces-quarkus-crud-demo
     app.kubernetes.io/version: java11-latest
