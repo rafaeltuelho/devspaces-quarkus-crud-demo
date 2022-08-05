@@ -5,7 +5,7 @@ metadata:
   annotations:
     app.openshift.io/vcs-url: https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo
     app.openshift.io/vcs-ref: main
-    app.quarkus.io/build-timestamp: 2022-08-04 - 23:57:10 +0000
+    app.quarkus.io/build-timestamp: 2022-08-05 - 01:14:21 +0000
   labels:
     app.kubernetes.io/name: devspaces-quarkus-crud-demo
     app.kubernetes.io/version: java11-latest
@@ -39,7 +39,7 @@ metadata:
   annotations:
     app.openshift.io/vcs-url: https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo
     app.openshift.io/vcs-ref: main
-    app.quarkus.io/build-timestamp: 2022-08-04 - 23:57:10 +0000
+    app.quarkus.io/build-timestamp: 2022-08-05 - 01:14:21 +0000
   labels:
     app.openshift.io/runtime: quarkus
     app.kubernetes.io/name: devspaces-quarkus-crud-demo
@@ -63,7 +63,7 @@ metadata:
   annotations:
     app.openshift.io/vcs-url: https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo
     app.openshift.io/vcs-ref: main
-    app.quarkus.io/build-timestamp: 2022-08-04 - 23:57:10 +0000
+    app.quarkus.io/build-timestamp: 2022-08-05 - 01:14:21 +0000
   labels:
     app.kubernetes.io/name: devspaces-quarkus-crud-demo
     app.kubernetes.io/version: java11-latest
@@ -79,7 +79,7 @@ spec:
       annotations:
         app.openshift.io/vcs-url: https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo
         app.openshift.io/vcs-ref: main
-        app.quarkus.io/build-timestamp: 2022-08-04 - 23:57:10 +0000
+        app.quarkus.io/build-timestamp: 2022-08-05 - 01:14:21 +0000
       labels:
         app.openshift.io/runtime: quarkus
         app.kubernetes.io/name: devspaces-quarkus-crud-demo
@@ -130,7 +130,7 @@ metadata:
   annotations:
     app.openshift.io/vcs-url: https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo
     app.openshift.io/vcs-ref: main
-    app.quarkus.io/build-timestamp: 2022-08-04 - 23:57:10 +0000
+    app.quarkus.io/build-timestamp: 2022-08-05 - 01:14:21 +0000
   labels:
     app.kubernetes.io/name: devspaces-quarkus-crud-demo
     app.kubernetes.io/version: java11-latest
