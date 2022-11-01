@@ -1,8 +1,0 @@
-- id: redhat/java/latest
-  override:
-    preferences:
-      java.server.launchMode: Standard
-      java.jdt.ls.vmargs: -javaagent:/lombok.jar  
-    sidecar:
-      memoryLimit: 2Gi
-- id: redhat/quarkus-java11/latest
