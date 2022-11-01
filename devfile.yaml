@@ -1,6 +1,6 @@
 schemaVersion: 2.1.0
 metadata:
-  name: devspaces-quarkus-crud-demo
+  name: devspaces-quarkus-crud-demo-intellij-editor
 projects:
   - name: devspaces-quarkus-crud-demo
     git:
@@ -28,7 +28,8 @@ components:
       env:
         - name: QUARKUS_HTTP_HOST
           value: 0.0.0.0
-      image: 'quay.io/devfile/universal-developer-image:ubi8-latest'
+      # image: 'quay.io/devfile/universal-developer-image:ubi8-latest'
+      image: 'registry.redhat.io/devspaces/udi-rhel8:latest'
       memoryLimit: 8Gi
       memoryRequest: 4Gi
       cpuRequest: 1000m
