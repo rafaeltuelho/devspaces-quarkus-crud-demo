@@ -11,10 +11,6 @@ projects:
 components:
   - name: tools
     container:
-      args:
-        - sh
-        - '-c'
-        - '${PLUGIN_REMOTE_ENDPOINT_EXECUTABLE}'
       endpoints:
         - exposure: none
           name: debug
