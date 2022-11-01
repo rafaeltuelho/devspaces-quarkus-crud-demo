@@ -11,7 +11,7 @@ metadata:
 components:
   - name: tools
     container:
-      image: registry.redhat.io/devspaces/udi-rhel8:3.2 
+      image: registry.redhat.io/devspaces/udi-rhel8:latest
       env:
         - name: QUARKUS_HTTP_HOST
           value: 0.0.0.0
@@ -21,14 +21,17 @@ components:
           protocol: tcp
           targetPort: 5005
         - exposure: public
-          name: hello-greeting-endpoint
+          name: home
           protocol: http
           targetPort: 8080
-          path: /hello/greeting/devspaces-user
+          path: /
       volumeMounts:
         - name: m2
           path: /home/user/.m2
-      memoryLimit: 4G
+      memoryLimit: 8Gi
+      memoryRequest: 2Gi
+      cpuRequest: 1000m
+      cpuLimit: 4000m
       mountSources: true
   - name: m2
     volume:
