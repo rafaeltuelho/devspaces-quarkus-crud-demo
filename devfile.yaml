@@ -11,10 +11,10 @@ projects:
 components:
   - name: tools
     container:
-      args:
-        - sh
-        - '-c'
-        - '${PLUGIN_REMOTE_ENDPOINT_EXECUTABLE}'
+      image: registry.redhat.io/devspaces/udi-rhel8:latest
+      env:
+        - name: QUARKUS_HTTP_HOST
+          value: 0.0.0.0
       endpoints:
         - exposure: none
           name: debug
@@ -22,22 +22,20 @@ components:
           targetPort: 5005
         - exposure: public
           name: home
-          path: /
           protocol: http
           targetPort: 8080
-      env:
-        - name: QUARKUS_HTTP_HOST
-          value: 0.0.0.0
-      image: 'quay.io/devfile/universal-developer-image:ubi8-latest'
-      memoryLimit: 8Gi
-      memoryRequest: 4Gi
-      cpuRequest: 1000m
-      cpuLimit: 4000m
-      mountSources: true
-      sourceMapping: /projects
+          path: /
       volumeMounts:
         - name: m2
           path: /home/user/.m2
+      memoryLimit: 8Gi
+      memoryRequest: 2Gi
+      cpuRequest: 1000m
+      cpuLimit: 4000m
+      mountSources: true
+  - name: m2
+    volume:
+      size: 1G
   - name: ubi-minimal
     container:
       args:
@@ -49,9 +47,6 @@ components:
       memoryLimit: 64M
       mountSources: true
       sourceMapping: /projects
-  - name: m2
-    volume:
-      size: 1G
 commands:
   - exec:
       commandLine: './mvnw clean package -Dquarkus.container-image.build=false -Dquarkus.container-image.builder=openshift'
