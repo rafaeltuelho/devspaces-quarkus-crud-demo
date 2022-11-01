@@ -44,7 +44,7 @@ components:
       command:
         - tail
       image: registry.access.redhat.com/ubi8/ubi-minimal
-      memoryLimit: 1Gi
+      memoryLimit: 64m
 commands:
   - exec:
       commandLine: './mvnw clean package -Dquarkus.container-image.build=false -Dquarkus.container-image.builder=openshift'
