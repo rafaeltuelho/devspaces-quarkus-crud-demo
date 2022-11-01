@@ -11,30 +11,25 @@ projects:
 components:
   - name: tools
     container:
+      image: registry.redhat.io/devspaces/udi-rhel8:3.2 
+      env:
+        - name: QUARKUS_HTTP_HOST
+          value: 0.0.0.0
       endpoints:
         - exposure: none
           name: debug
           protocol: tcp
           targetPort: 5005
         - exposure: public
-          name: home
-          path: /
+          name: hello-greeting-endpoint
           protocol: http
           targetPort: 8080
-      env:
-        - name: QUARKUS_HTTP_HOST
-          value: 0.0.0.0
-      # image: 'quay.io/devfile/universal-developer-image:ubi8-latest'
-      image: 'registry.redhat.io/devspaces/udi-rhel8:3.2'
-      memoryLimit: 8Gi
-      memoryRequest: 2Gi
-      cpuRequest: 1000m
-      cpuLimit: 4000m
-      mountSources: true
-      # sourceMapping: /projects
+          path: /hello/greeting/devspaces-user
       volumeMounts:
         - name: m2
           path: /home/user/.m2
+      memoryLimit: 4G
+      mountSources: true
   - name: m2
     volume:
       size: 1G
