@@ -29,16 +29,19 @@ components:
         - name: QUARKUS_HTTP_HOST
           value: 0.0.0.0
       # image: 'quay.io/devfile/universal-developer-image:ubi8-latest'
-      image: 'registry.redhat.io/devspaces/udi-rhel8'
+      image: 'registry.redhat.io/devspaces/udi-rhel8:3.2'
       memoryLimit: 8Gi
-      memoryRequest: 4Gi
+      memoryRequest: 2Gi
       cpuRequest: 1000m
       cpuLimit: 4000m
       mountSources: true
-      sourceMapping: /projects
+      # sourceMapping: /projects
       volumeMounts:
         - name: m2
           path: /home/user/.m2
+  - name: m2
+    volume:
+      size: 1G
   - name: ubi-minimal
     container:
       args:
@@ -47,12 +50,7 @@ components:
       command:
         - tail
       image: registry.access.redhat.com/ubi8/ubi-minimal
-      memoryLimit: 64M
-      mountSources: true
-      sourceMapping: /projects
-  - name: m2
-    volume:
-      size: 1G
+      memoryLimit: 1Gi
 commands:
   - exec:
       commandLine: './mvnw clean package -Dquarkus.container-image.build=false -Dquarkus.container-image.builder=openshift'
