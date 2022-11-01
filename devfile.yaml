@@ -1,13 +1,13 @@
 schemaVersion: 2.1.0
 metadata:
   name: devspaces-quarkus-crud-demo-intellij-editor
-# projects:
-#   - name: devspaces-quarkus-crud-demo
-#     git:
-#       remotes:
-#         origin: "https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo"
-#       checkoutFrom:
-#         revision: idea-editor
+projects:
+  - name: devspaces-quarkus-crud-demo
+    git:
+      remotes:
+        origin: "https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo"
+      checkoutFrom:
+        revision: idea-editor
 components:
   - name: tools
     container:
