@@ -29,7 +29,7 @@ components:
         - name: QUARKUS_HTTP_HOST
           value: 0.0.0.0
       # image: 'quay.io/devfile/universal-developer-image:ubi8-latest'
-      image: 'registry.redhat.io/devspaces/udi-rhel8:latest'
+      image: 'registry.redhat.io/devspaces/udi-rhel8'
       memoryLimit: 8Gi
       memoryRequest: 4Gi
       cpuRequest: 1000m
