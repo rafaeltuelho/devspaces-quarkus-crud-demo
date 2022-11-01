@@ -1,3 +1,47 @@
 {
-    "java.configuration.updateBuildConfiguration": "automatic"
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.completion.favoriteStaticMembers": [
+        "org.junit.Assert.*",
+        "org.junit.Assume.*",
+        "org.junit.jupiter.api.Assertions.*",
+        "org.junit.jupiter.api.Assumptions.*",
+        "org.junit.jupiter.api.DynamicContainer.*",
+        "org.junit.jupiter.api.DynamicTest.*",
+        "org.mockito.Mockito.*",
+        "org.mockito.ArgumentMatchers.*",
+        "org.mockito.Answers.*",
+        "javax.ws.rs.core.Response.Status.*",
+        "io.restassured.RestAssured.*",
+        "javax.ws.rs.core.HttpHeaders.*",
+        "javax.ws.rs.core.Response.Status.*",
+        "javax.ws.rs.core.MediaType.*",
+        "org.hamcrest.CoreMatchers.*",
+        "org.hamcrest.MatcherAssert.*",
+        "org.hamcrest.Matchers.*",
+        "org.assertj.core.api.Assertions.*"
+      ],
+      "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx2G -Xms512m -Xlog:disable",
+      "java.import.generatesMetadataFilesAtProjectRoot": true,
+      "java.errors.incompleteClasspath.severity": "ignore",
+      "java.typeHierarchy.lazyLoad": true,
+      "java.completion.filteredTypes": [
+        "java.awt.*",
+        "com.sun.*",
+        "sun.*",
+        "jdk.*",
+        "org.graalvm.*",
+        "io.micrometer.shaded.*"
+      ],
+      "editor.tabSize": 2,
+      "java.codeGeneration.hashCodeEquals.useJava7Objects": true,
+      "java.codeGeneration.hashCodeEquals.useInstanceof": true,
+      "java.completion.importOrder": [
+
+        "#",
+        "java",
+        "javax",
+        "org",
+        "com",
+        ""
+      ],
 }

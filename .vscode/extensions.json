@@ -3,9 +3,6 @@
       "redhat.vscode-quarkus",
       "redhat.vscode-openshift-connector",
       "redhat.fabric8-analytics",
-      "redhat.vscode-xml",
-      // "vscjava.vscode-java-test",
-      // "cschleiden.vscode-github-actions",
-      // "GabrielBB.vscode-lombok"
+      "redhat.vscode-xml"
     ]
 }
