@@ -14,7 +14,7 @@ spec:
     repoURL: https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo.git
     path: deploy/k8s
     directory:
-      include: '*.yaml'
+      include: '*'
     targetRevision: HEAD
   syncPolicy:
     automated:
