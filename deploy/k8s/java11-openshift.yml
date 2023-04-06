@@ -8,7 +8,7 @@ metadata:
     app.quarkus.io/build-timestamp: 2023-04-06 - 17:13:04 +0000
   labels:
     app.kubernetes.io/name: devspaces-quarkus-crud-demo
-    app.kubernetes.io/version: amd64java11-latest
+    app.kubernetes.io/version: java11-latest-amd64
     app.openshift.io/runtime: quarkus
   name: devspaces-quarkus-crud-demo
 spec:
@@ -18,7 +18,7 @@ spec:
       targetPort: 8080
   selector:
     app.kubernetes.io/name: devspaces-quarkus-crud-demo
-    app.kubernetes.io/version: amd64java11-latest
+    app.kubernetes.io/version: java11-latest-amd64
   type: ClusterIP
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -43,7 +43,7 @@ metadata:
   labels:
     app.openshift.io/runtime: quarkus
     app.kubernetes.io/name: devspaces-quarkus-crud-demo
-    app.kubernetes.io/version: amd64java11-latest
+    app.kubernetes.io/version: java11-latest-amd64
   name: devspaces-quarkus-crud-demo
 spec:
   lookupPolicy:
@@ -66,14 +66,14 @@ metadata:
     app.quarkus.io/build-timestamp: 2023-04-06 - 17:13:04 +0000
   labels:
     app.kubernetes.io/name: devspaces-quarkus-crud-demo
-    app.kubernetes.io/version: amd64java11-latest
+    app.kubernetes.io/version: java11-latest-amd64
     app.openshift.io/runtime: quarkus
   name: devspaces-quarkus-crud-demo
 spec:
   replicas: 1
   selector:
     app.kubernetes.io/name: devspaces-quarkus-crud-demo
-    app.kubernetes.io/version: amd64java11-latest
+    app.kubernetes.io/version: java11-latest-amd64
   template:
     metadata:
       annotations:
@@ -83,7 +83,7 @@ spec:
       labels:
         app.openshift.io/runtime: quarkus
         app.kubernetes.io/name: devspaces-quarkus-crud-demo
-        app.kubernetes.io/version: amd64java11-latest
+        app.kubernetes.io/version: java11-latest-amd64
     spec:
       containers:
         - env:
@@ -91,7 +91,7 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
-          image: quay.io/rafaeltuelho/devspaces-quarkus-crud-demo:amd64java11-latest
+          image: quay.io/rafaeltuelho/devspaces-quarkus-crud-demo:java11-latest-amd64
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
@@ -133,7 +133,7 @@ metadata:
     app.quarkus.io/build-timestamp: 2023-04-06 - 17:13:04 +0000
   labels:
     app.kubernetes.io/name: devspaces-quarkus-crud-demo
-    app.kubernetes.io/version: amd64java11-latest
+    app.kubernetes.io/version: java11-latest-amd64
     app.openshift.io/runtime: quarkus
   name: devspaces-quarkus-crud-demo
 spec:
@@ -188,7 +188,7 @@ metadata:
     app.quarkus.io/build-timestamp: 2023-04-06 - 17:13:04 +0000
   labels:
     app.kubernetes.io/name: devspaces-quarkus-crud-demo
-    app.kubernetes.io/version: amd64java11-latest
+    app.kubernetes.io/version: java11-latest-amd64
     app.openshift.io/runtime: quarkus
   name: devspaces-quarkus-crud-demo
 spec:
@@ -198,7 +198,7 @@ spec:
       targetPort: 8080
   selector:
     app.kubernetes.io/name: devspaces-quarkus-crud-demo
-    app.kubernetes.io/version: amd64java11-latest
+    app.kubernetes.io/version: java11-latest-amd64
   type: ClusterIP
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -223,7 +223,7 @@ metadata:
   labels:
     app.openshift.io/runtime: quarkus
     app.kubernetes.io/name: devspaces-quarkus-crud-demo
-    app.kubernetes.io/version: amd64java11-latest
+    app.kubernetes.io/version: java11-latest-amd64
   name: devspaces-quarkus-crud-demo
 spec:
   lookupPolicy:
@@ -246,14 +246,14 @@ metadata:
     app.quarkus.io/build-timestamp: 2023-04-06 - 17:13:04 +0000
   labels:
     app.kubernetes.io/name: devspaces-quarkus-crud-demo
-    app.kubernetes.io/version: amd64java11-latest
+    app.kubernetes.io/version: java11-latest-amd64
     app.openshift.io/runtime: quarkus
   name: devspaces-quarkus-crud-demo
 spec:
   replicas: 1
   selector:
     app.kubernetes.io/name: devspaces-quarkus-crud-demo
-    app.kubernetes.io/version: amd64java11-latest
+    app.kubernetes.io/version: java11-latest-amd64
   template:
     metadata:
       annotations:
@@ -263,7 +263,7 @@ spec:
       labels:
         app.openshift.io/runtime: quarkus
         app.kubernetes.io/name: devspaces-quarkus-crud-demo
-        app.kubernetes.io/version: amd64java11-latest
+        app.kubernetes.io/version: java11-latest-amd64
     spec:
       containers:
         - env:
@@ -271,7 +271,7 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
-          image: quay.io/rafaeltuelho/devspaces-quarkus-crud-demo:amd64java11-latest
+          image: quay.io/rafaeltuelho/devspaces-quarkus-crud-demo:java11-latest-amd64
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3
@@ -313,7 +313,7 @@ metadata:
     app.quarkus.io/build-timestamp: 2023-04-06 - 17:13:04 +0000
   labels:
     app.kubernetes.io/name: devspaces-quarkus-crud-demo
-    app.kubernetes.io/version: amd64java11-latest
+    app.kubernetes.io/version: java11-latest-amd64
     app.openshift.io/runtime: quarkus
   name: devspaces-quarkus-crud-demo
 spec:
