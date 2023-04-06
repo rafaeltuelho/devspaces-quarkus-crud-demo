@@ -55,7 +55,7 @@ public class FruitEntityResource {
             throw new WebApplicationException("Id was invalidly set on request.", 422);
         }
 
-        // fruit.name = fruit.name.toUpperCase();
+        fruit.name = fruit.name.toUpperCase();
         fruit.persist();
         return Response.ok(fruit).status(201).build();
     }
