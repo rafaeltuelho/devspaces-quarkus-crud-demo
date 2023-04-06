@@ -48,9 +48,9 @@ jobs:
           distribution: temurin
           cache: maven
 
-      - name: Create k8s resources
-        shell: bash
-        run: scripts/generate-k8s-resources.sh
+      # - name: Create k8s resources
+      #   shell: bash
+      #   run: scripts/generate-k8s-resources.sh
 
       - name: List generated k8s resources
         shell: bash

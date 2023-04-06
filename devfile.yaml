@@ -28,10 +28,10 @@ components:
       volumeMounts:
         - name: m2
           path: /home/user/.m2
-      memoryLimit: 6Gi
+      memoryLimit: 4Gi
       memoryRequest: 2Gi
       cpuRequest: 1000m
-      cpuLimit: 4000m
+      cpuLimit: 3000m
       mountSources: true
   - name: m2
     volume:
@@ -58,7 +58,7 @@ commands:
       label: Jvm Package
     id: mvn-clean-package
   - exec:
-      commandLine: './mvnw package -Dnative -Dmaven.test.skip -Dquarkus.native.native-image-xmx=6G'
+      commandLine: './mvnw package -Dnative -Dmaven.test.skip -Dquarkus.native.native-image-xmx=4G'
       component: tools
       group:
         kind: build
