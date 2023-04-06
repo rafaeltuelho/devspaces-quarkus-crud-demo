@@ -1,13 +1,13 @@
 schemaVersion: 2.1.0
 metadata:
   name: devspaces-quarkus-crud-demo
-projects:
-  - name: devspaces-quarkus-crud-demo
-    git:
-      remotes:
-        origin: "https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo"
-      checkoutFrom:
-        revision: main
+# projects:
+#   - name: devspaces-quarkus-crud-demo
+#     git:
+#       remotes:
+#         origin: "https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo"
+#       checkoutFrom:
+#         revision: main
 components:
   - name: tools
     container:
@@ -28,7 +28,7 @@ components:
       volumeMounts:
         - name: m2
           path: /home/user/.m2
-      memoryLimit: 8Gi
+      memoryLimit: 6Gi
       memoryRequest: 2Gi
       cpuRequest: 1000m
       cpuLimit: 4000m
@@ -82,11 +82,11 @@ commands:
       workingDir: '${PROJECT_SOURCE}'
     id: deploy-on-openshift
   - exec:
-      commandLine: '.vscode/deploy_pg_using_operator.sh'
+      label: Deploy a PostgreSQL instance
+      commandLine: '${PROJECT_SOURCE}/infrastructure/deploy_pg_using_operator.sh'
       component: tools
       group:
         kind: run
-      label: Deploy a PostgreSQL instance
       workingDir: '${PROJECT_SOURCE}'
     id: deploy-postgresql
   - exec:

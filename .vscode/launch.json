@@ -6,7 +6,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            // "preLaunchTask": "che: start-dev",
+            "preLaunchTask": "devfile: Start Development mode (Hot reload + debug)",
             "type": "java",
             "request": "attach",
             "hostName": "127.0.0.1",

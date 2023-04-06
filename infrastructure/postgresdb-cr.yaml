@@ -3,8 +3,18 @@ kind: PostgresCluster
 metadata:
   name: pg-cluster
 spec:
+  openshift: true
   image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres:ubi8-14.4-0
   postgresVersion: 14
+  # databaseInitSQL:
+  #   key: init-sql
+  #   name: db-init
+  # users:
+  #   - name: postgres
+  #     databases:
+  #       - "postgres"
+  #     password:
+  #       type: AlphaNumeric
   instances:
     - name: instance1
       dataVolumeClaimSpec:

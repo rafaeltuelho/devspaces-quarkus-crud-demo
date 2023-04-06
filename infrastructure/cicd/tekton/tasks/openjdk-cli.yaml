@@ -1,0 +1,26 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: openjdk-cli
+spec:
+  workspaces:
+    - name: source
+      description: The workspace consisting of maven project.
+      optional: false
+  params:
+    - name: CONTEXT_DIR
+      type: string
+      description: >-
+        The context directory within the repository for sources on
+        which we want to execute your command/tool.
+      default: "."
+  steps:
+    - name: run-jdk-cmd
+      image: registry.access.redhat.com/ubi8/openjdk-17:latest
+      workingDir: $(workspaces.source.path)/$(params.CONTEXT_DIR)
+      command: ["/usr/bin/java"]
+      args:
+        - '-version'
+      # env:
+      #   - name: ENV_VAR_NAME
+      #     value: "$(inputs.params.PARAM_NAME)"

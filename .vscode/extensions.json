@@ -5,6 +5,7 @@
       "redhat.fabric8-analytics",
       "redhat.vscode-xml",
       "vscjava.vscode-java-debug",
-      "vscjava.vscode-java-test"
+      "vscjava.vscode-java-test",
+      "cnshenj.vscode-task-manager"
     ]
 }
