@@ -19,7 +19,7 @@ do_build() {
   local project=.
   local deployment_type=$2
   local javaVersion=$3
-  local kind=$4
+  local kind=${4:-"amd64"}
   local tag="${kind}java${javaVersion}-latest"
   local git_server_url="${GITHUB_SERVER_URL:=https://github.com}"
   local git_repo="${GITHUB_REPOSITORY:=rafaeltuelho/devspaces-quarkus-crud-demo}"
