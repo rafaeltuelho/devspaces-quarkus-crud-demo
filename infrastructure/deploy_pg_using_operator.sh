@@ -15,7 +15,7 @@ fi
 
 echo
 echo "Check if there is PG Cluster already deployed."
-oc get PostgresCluster postgres
+oc get PostgresCluster pg-cluster
 if [[ $? -eq 0 ]] 
 then
    echo
@@ -23,9 +23,9 @@ then
    exit 1
 fi
 
-echo
-echo "Creating db initialization script as a ConfigMap"
-oc create -f ${PROJECT_SOURCE:-$(pwd)}/infrastructure/db-init/db-init-cm.yaml
+# echo
+# echo "Creating db initialization script as a ConfigMap"
+# oc create -f ${PROJECT_SOURCE:-$(pwd)}/infrastructure/db-init/db-init-cm.yaml
 echo
 echo "Creating a PostgreSQL instance using ${OPERATOR_API_GROUP}..."
 oc create -f ${PROJECT_SOURCE:-$(pwd)}/infrastructure/postgresdb-cr.yaml
@@ -34,11 +34,11 @@ then
   echo
   echo "Wait until PG instance gets ready..."
   sleep 3
-  podname=$(oc get pod -o name | grep pod/postgres-instance1)
+  podname=$(oc get pod -o name | grep pod/pg-cluster-instance1)
   oc wait --for=condition=Ready $podname
 
   # change the auto-generated SCRAM based db password
-  oc patch secret postgres-pguser-postgres -p '{"stringData":{"password":"password","verifier":""}}'
+  oc patch secret pg-cluster-pguser-pg-cluster -p '{"stringData":{"password":"password","verifier":""}}'
 
   echo "then you can connect to it using the following properties:"
   echo
@@ -51,7 +51,7 @@ then
 #       uri: .data.uri | @base64d
 #       }' > ${PROJECT_SOURCE:-$(pwd)}/pg-conn-info.json
 
-  oc get secret postgres-pguser-postgres -o json | jq '{ 
+  oc get secret pg-cluster-pguser-pg-cluster -o json | jq '{ 
       user: .data.user | @base64d, 
       password: .data.password | @base64d, 
       host: "postgres-ha", 

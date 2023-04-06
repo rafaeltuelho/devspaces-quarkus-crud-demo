@@ -49,30 +49,31 @@ components:
       sourceMapping: /projects
 commands:
   - exec:
-      commandLine: './mvnw clean package -Dquarkus.container-image.build=false -Dquarkus.container-image.builder=openshift'
+      commandLine: './mvnw clean package -DskipTests -Dquarkus.container-image.build=false -Dquarkus.container-image.builder=openshift'
       component: tools
       group:
         isDefault: true
         kind: build
       workingDir: '${PROJECT_SOURCE}'
-    id: package
+      label: Jvm Package
+    id: mvn-clean-package
   - exec:
       commandLine: './mvnw package -Dnative -Dmaven.test.skip -Dquarkus.native.native-image-xmx=6G'
       component: tools
       group:
         kind: build
-      label: Package Native
+      label: Native Package
       workingDir: '${PROJECT_SOURCE}'
-    id: package-native
+    id: mvn-package-native
   - exec:
       commandLine: './mvnw compile quarkus:dev -Dquarkus.container-image.build=false -Dquarkus.container-image.builder=openshift'
       component: tools
       group:
         isDefault: true
         kind: run
-      label: Start Development mode (Hot reload + debug)
+      label: Start in dev mode (Hot reload + debug)
       workingDir: '${PROJECT_SOURCE}'
-    id: start-dev
+    id: mvn-start-dev
   - exec:
       commandLine: 'oc project ${DEVWORKSPACE_NAMESPACE}; ./mvnw clean package -DskipTests -Dquarkus.kubernetes.deploy=true -Dquarkus.container-image.builder=openshift'
       component: tools
@@ -94,6 +95,6 @@ commands:
       component: ubi-minimal
       group:
         kind: run
-      label: Start Native
+      label: Start in native mode
       workingDir: '${PROJECT_SOURCE}/target'
     id: start-native
