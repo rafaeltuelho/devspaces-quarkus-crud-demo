@@ -34,3 +34,5 @@ pom.xml.releaseBackup
 pom.xml.versionsBackup
 release.properties
 /projects/devspaces-quarkus-crud-demo/.odo/env
+pg-conn-info.json
+.factorypath
