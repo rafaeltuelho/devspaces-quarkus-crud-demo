@@ -93,19 +93,6 @@ process_quarkus_project() {
     cat $app_generated_input_file >> $project_output_file
     cat $app_generated_input_file >> $all_apps_output_file
   fi
-
-  # if [[ "$project" == "rest-fights" ]]; then
-    # Create a descriptor for all of the downstream services (rest-heroes and rest-villains)
-    local all_downstream_output_file="$project/$OUTPUT_DIR/${output_filename}-all-downstream.yml"
-
-
-    rm -rf $all_downstream_output_file
-
-    create_output_file $all_downstream_output_file
-
-    echo "Copying ${app_generated_input_file} to $all_downstream_output_file"
-    cat $app_generated_input_file >> $all_downstream_output_file
-  # fi
 }
 
 # create_monitoring() {
