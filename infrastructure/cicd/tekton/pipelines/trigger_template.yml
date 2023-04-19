@@ -1,0 +1,37 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: ci-trigger-template
+spec:
+  params:
+  - name: git-repo-url
+    description: The git repository url
+    default: https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo.git
+  - name: git-revision
+    description: The git revision
+    default: main
+  - name: git-repo-name
+    description: The name of the deployment to be created / patched
+    default: devspaces-quarkus-crud-demo
+  resourcetemplates:
+  - apiVersion: tekton.dev/v1beta1
+    kind: PipelineRun
+    metadata:
+      generateName: build-deploy-
+    spec:
+      serviceAccountName: pipeline
+      pipelineRef:
+        name: gitops-dev-pipeline
+      params:
+      - name: deployment-name
+        value: $(tt.params.git-repo-name)
+      - name: git-url
+        value: $(tt.params.git-repo-url)
+      - name: git-revision
+        value: $(tt.params.git-revision)
+      workspaces:
+      - name: maven-settings
+        emptyDir: {}
+      - name: shared-workspace
+        persistentVolumeClaim:
+          claimName: workspace-builder-pvc        

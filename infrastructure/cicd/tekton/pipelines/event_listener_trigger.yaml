@@ -1,0 +1,20 @@
+apiVersion: triggers.tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: cicd-event-listener
+spec:
+  serviceAccountName: pipeline
+  triggers:
+    - name: pipeline-trigger
+      # use when you need to apply some filter on the git webhook payload
+      #interceptors:
+          #https://tekton.dev/vault/triggers-v0.7.0/eventlisteners/#cel-interceptors
+      #  - cel: #https://bigkevmcd.github.io/kubernetes/tekton/pipeline/2020/02/05/cel-interception.html
+            #filter: "body.head_commit.message.indexOf('release') > -1"
+      #      filter: "body.ref.split('/')[1] == 'tags' && body.ref.split('/')[2].startsWith('v')" #e.g: "ref": "refs/tags/v2.0.0",
+      serviceAccountName: pipeline  
+      bindings:
+        - kind: ClusterTriggerBinding
+          ref: github-push
+      template:
+        ref: cicd-trigger-template
