@@ -65,6 +65,8 @@ spec:
             - clean
             - package
             - '-DskipTests'
+            - '-Dquarkus.container-image.build=false' 
+            - '-Dquarkus.container-image.builder=jib'
             - '-e'
             - '-B'
             - '-Dmaven.repo.local=$(workspaces.source.path)/.m2'
