@@ -75,7 +75,7 @@ commands:
       workingDir: '${PROJECT_SOURCE}'
     id: mvn-start-dev
   - exec:
-      commandLine: 'oc project ${DEVWORKSPACE_NAMESPACE}; ./mvnw clean package -DskipTests -Dquarkus.kubernetes.deploy=true -Dquarkus.container-image.builder=openshift'
+      commandLine: 'oc project ${DEVWORKSPACE_NAMESPACE}; ./mvnw clean package -DskipTests -Dquarkus.kubernetes.deploy=true -Dquarkus.container-image.build=true -Dquarkus.container-image.builder=openshift'
       component: tools
       group:
         kind: run

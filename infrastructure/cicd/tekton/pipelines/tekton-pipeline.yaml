@@ -1,98 +1,61 @@
 apiVersion: tekton.dev/v1beta1
 kind: Pipeline
 metadata:
-  name: build-and-deploy-apps
+  name: gitops-dev-pipeline
 spec:
-  # finally:
-  #   - name: kustomize-deploy
-  #     params:
-  #       - name: kustomize-dir
-  #         value: $(params.context-dir)/$(params.kustomize-dir)
-  #       - name: target-namespace
-  #         value: $(params.target-namespace)
-  #       - name: image-name
-  #         value: $(params.image-name)
-  #       - name: image-digest-path
-  #         value: $(params.context-dir)/target
-      # taskRef:
-      #   kind: Task
-      #   name: kustomize
-      # workspaces:
-      #   - name: source
-      #     workspace: shared-workspace
   params:
-    - default: 'https://github.com/redhat-na-ssa/workshop_performance-monitoring-apps.git'
-      description: Git repo URL
+    - default: 'https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo.git'
+      description: Source to the GIT
       name: git-url
       type: string
     - default: main
-      description: 'branch, tag, revision'
+      description: revision (branch) to be used
       name: git-revision
       type: string
-    - default: .
-      description: Git Repo sub directory
-      name: context-dir
+    - name: config-git-url
       type: string
-    - default: quay.io
-      description: Container Registry URL
-      name: registry-url
+      description: URL of the Git config repository
+      default: 'https://github.com/rafaeltuelho/devspaces-quarkus-crud-demo-manifests.git'
+    - name: config-dir
       type: string
-    - default: rh-summit-workshop
-      description: Repository name in your Container Registry
-      name: registry-repo
+      description: Configuration directory within the config-git-url with the files
+      default: 'config/overlays/dev'
+    - name: context-dir
+      default: "."
       type: string
-    - default: quarkus-app
-      description: Quarkus App Name (maven project context dir)
-      name: quarkus-app-name
+      description: Where (sub-dir) to checkout the source relative to the workspace
+    - name: image-name
       type: string
-    - default: micronaut-app
-      description: Micronaut App Name (maven project context dir)
-      name: micronaut-app-name
-      type: string
-    - default: springboot-app
-      description: Springboot App Name (maven project context dir)
-      name: springboot-app-name
-      type: string
-
-    # - name: kustomize-dir
-    #   type: string
-    #   default: kustomize_ext/overlays/dev
-    #   description: 'Kustomize manifests dir'
+      description: the name of the target image including registry
+      default: quay.io/rafaeltuelho/devspaces-quarkus-crud-demo
     # no need to pass registry creds using params if you have a proper SA and dockerconfig Secret 
     #  setup to be used in your PipelineRuns (serviceAccount)
+    # - name: image-username
+    #   type: string
+    #   description: the username you use to access the registry
+    # - name: image-password
+    #   type: string
+    #   description: The password you use to access the registry
   tasks:
     - name: git-clone
       params:
         - name: url
           value: $(params.git-url)
-        - name: revision
-          value: $(params.git-revision)
-        - name: submodules
-          value: 'true'
-        - name: depth
-          value: '1'
-        - name: sslVerify
-          value: 'true'
-        - name: crtFileName
-          value: ca-bundle.crt
-        - name: subdirectory
-          value: $(params.context-dir)
         - name: deleteExisting
           value: 'true'
         - name: verbose
           value: 'true'
-        - name: gitInitImage
-          value: >-
-            registry.redhat.io/openshift-pipelines/pipelines-git-init-rhel8@sha256:a538c423e7a11aae6ae582a411fdb090936458075f99af4ce5add038bb6983e8
-        - name: userHome
-          value: /tekton/home
+        - name: revision
+          value: $(params.git-revision)
+        - name: subdirectory
+          value: $(params.context-dir)
       taskRef:
         kind: ClusterTask
         name: git-clone
       workspaces:
         - name: output
           workspace: shared-workspace
-    - name: quarkus-maven-package
+    - name: maven-package
       params:
         - name: MAVEN_IMAGE
           value: >-
@@ -106,7 +69,7 @@ spec:
             - '-B'
             - '-Dmaven.repo.local=$(workspaces.source.path)/.m2'
         - name: CONTEXT_DIR
-          value: $(params.context-dir)/$(params.quarkus-app-name)
+          value: $(params.context-dir)
       runAfter:
         - git-clone
       taskRef:
@@ -117,7 +80,7 @@ spec:
           workspace: shared-workspace
         - name: maven-settings
           workspace: maven-settings
-    - name: micronaut-maven-package
+    - name: build-and-push-image
       params:
         - name: MAVEN_IMAGE
           value: >-
@@ -127,13 +90,17 @@ spec:
             - clean
             - package
             - '-DskipTests'
+            - '-Dquarkus.container-image.build=true'
+            - '-Dquarkus.container-image.push=true'
+            - '-Dquarkus.container-image.builder=jib'
+            - '-Dquarkus.container-image.image=$(params.image-name)'
             - '-e'
             - '-B'
             - '-Dmaven.repo.local=$(workspaces.source.path)/.m2'
         - name: CONTEXT_DIR
-          value: $(params.context-dir)/$(params.micronaut-app-name)
+          value: $(params.context-dir)
       runAfter:
-        - quarkus-maven-package
+        - maven-package
       taskRef:
         kind: ClusterTask
         name: maven
@@ -142,179 +109,40 @@ spec:
           workspace: shared-workspace
         - name: maven-settings
           workspace: maven-settings
-    - name: springboot-maven-package
+    - name: extract-image-digest
       params:
-        - name: MAVEN_IMAGE
-          value: >-
-            image-registry.openshift-image-registry.svc:5000/openshift/java:latest
-        - name: GOALS
-          value:
-            - clean
-            - package
-            - '-DskipTests'
-            - '-e'
-            - '-B'
-            - '-Dmaven.repo.local=$(workspaces.source.path)/.m2'
-        - name: CONTEXT_DIR
-          value: $(params.context-dir)/$(params.springboot-app-name)
+        - name: image-digest-path
+          value: $(params.context-dir)/target
       runAfter:
-        - micronaut-maven-package
+        - build-and-push-image
       taskRef:
-        kind: ClusterTask
-        name: maven
+        kind: Task
+        name: extract-image-digest
       workspaces:
         - name: source
           workspace: shared-workspace
-        - name: maven-settings
-          workspace: maven-settings
-    - name: quarkus-image-build
+    - name: git-update-manifests
       params:
-        - name: IMAGE
-          value: >-
-            $(params.registry-url)/$(params.registry-repo)/$(params.quarkus-app-name):$(tasks.git-clone.results.commit)
-        - name: BUILDER_IMAGE
-          value: >-
-            registry.redhat.io/rhel8/buildah@sha256:ac0b8714cc260c94435cab46fe41b3de0ccbc3d93e38c395fa9d52ac49e521fe
-        - name: STORAGE_DRIVER
-          value: vfs
-        - name: DOCKERFILE
-          value: ./src/main/docker/Dockerfile.jvm
-        - name: CONTEXT
-          value: ./$(params.quarkus-app-name)
-        - name: TLSVERIFY
-          value: 'true'
-        - name: FORMAT
-          value: oci
-        - name: SKIP_PUSH
-          value: 'false'
+        - name: GIT_REPOSITORY
+          value: $(params.config-git-url)
+        - name: CURRENT_IMAGE
+          value: $(params.image-name):latest
+        - name: NEW_IMAGE
+          value: $(params.image-name)
+        - name: NEW_DIGEST
+          value: $(tasks.extract-image-digest.results.DIGEST)
+        - name: KUSTOMIZATION_PATH
+          value: $(params.config-dir)
       runAfter:
-        - quarkus-maven-package
+        - extract-image-digest
       taskRef:
-        kind: ClusterTask
-        name: buildah
+        kind: Task
+        name: git-update-manifests
       workspaces:
-        - name: source
+        - name: workspace
           workspace: shared-workspace
-    - name: micronaut-image-build
-      params:
-        - name: IMAGE
-          value: >-
-            $(params.registry-url)/$(params.registry-repo)/$(params.micronaut-app-name):$(tasks.git-clone.results.commit)
-        - name: BUILDER_IMAGE
-          value: >-
-            registry.redhat.io/rhel8/buildah@sha256:ac0b8714cc260c94435cab46fe41b3de0ccbc3d93e38c395fa9d52ac49e521fe
-        - name: STORAGE_DRIVER
-          value: vfs
-        - name: DOCKERFILE
-          value: ./src/main/docker/Dockerfile.jvm
-        - name: CONTEXT
-          value: ./$(params.micronaut-app-name)
-        - name: TLSVERIFY
-          value: 'true'
-        - name: FORMAT
-          value: oci
-        - name: SKIP_PUSH
-          value: 'false'
-      runAfter:
-        - micronaut-maven-package
-      taskRef:
-        kind: ClusterTask
-        name: buildah
-      workspaces:
-        - name: source
-          workspace: shared-workspace
-    - name: springboot-image-build
-      params:
-        - name: IMAGE
-          value: >-
-            $(params.registry-url)/$(params.registry-repo)/$(params.springboot-app-name):$(tasks.git-clone.results.commit)
-        - name: BUILDER_IMAGE
-          value: >-
-            registry.redhat.io/rhel8/buildah@sha256:ac0b8714cc260c94435cab46fe41b3de0ccbc3d93e38c395fa9d52ac49e521fe
-        - name: STORAGE_DRIVER
-          value: vfs
-        - name: DOCKERFILE
-          value: ./src/main/docker/Dockerfile.jvm
-        - name: CONTEXT
-          value: ./$(params.springboot-app-name)
-        - name: TLSVERIFY
-          value: 'true'
-        - name: FORMAT
-          value: oci
-        - name: SKIP_PUSH
-          value: 'false'
-      runAfter:
-        - springboot-maven-package
-      taskRef:
-        kind: ClusterTask
-        name: buildah
-      workspaces:
-        - name: source
-          workspace: shared-workspace
-    - name: deploy-quarkus-app
-      params:
-        - name: kn-image
-          value: >-
-            registry.redhat.io/openshift-serverless-1/client-kn-rhel8@sha256:89fb53858bb93ada958faff761915f45d01e3364b5e5df4ba05b01c4b8cde587
-        - name: ARGS
-          value:
-            - service
-            - create
-            - $(params.quarkus-app-name)
-            - '--image=$(params.registry-url)/$(params.registry-repo)/$(params.quarkus-app-name)@$(tasks.quarkus-image-build.results.IMAGE_DIGEST)'
-            # - '--revision-name={{.Service}}-{{.Generation}}'
-            # - '--namespace=sandbox'
-            - '--limit=cpu=100m,memory=128Mi'
-            - --no-wait
-            - --force
-            # - '--env=QUARKUS_PROFILE=dev'
-      runAfter:
-        - quarkus-image-build
-      taskRef:
-        kind: ClusterTask
-        name: kn
-    - name: deploy-micronaut-app
-      params:
-        - name: kn-image
-          value: >-
-            registry.redhat.io/openshift-serverless-1/client-kn-rhel8@sha256:89fb53858bb93ada958faff761915f45d01e3364b5e5df4ba05b01c4b8cde587
-        - name: ARGS
-          value:
-            - service
-            - create
-            - $(params.micronaut-app-name)
-            - '--image=$(params.registry-url)/$(params.registry-repo)/$(params.micronaut-app-name)@$(tasks.micronaut-image-build.results.IMAGE_DIGEST)'
-            # - '--revision-name={{.Service}}-{{.Generation}}'
-            # - '--namespace=sandbox'
-            - '--limit=cpu=100m,memory=128Mi'
-            - --no-wait
-            - --force
-      runAfter:
-        - micronaut-image-build
-      taskRef:
-        kind: ClusterTask
-        name: kn
-    - name: deploy-springboot-app
-      params:
-        - name: kn-image
-          value: >-
-            registry.redhat.io/openshift-serverless-1/client-kn-rhel8@sha256:89fb53858bb93ada958faff761915f45d01e3364b5e5df4ba05b01c4b8cde587
-        - name: ARGS
-          value:
-            - service
-            - create
-            - $(params.springboot-app-name)
-            - '--image=$(params.registry-url)/$(params.registry-repo)/$(params.springboot-app-name)@$(tasks.springboot-image-build.results.IMAGE_DIGEST)'
-            # - '--revision-name={{.Service}}-{{.Generation}}'
-            # - '--namespace=sandbox'
-            - '--limit=cpu=100m,memory=128Mi'
-            - --no-wait
-            - --force
-      runAfter:
-        - springboot-image-build
-      taskRef:
-        kind: ClusterTask
-        name: kn
   workspaces:
     - name: shared-workspace
+      optional: false
     - name: maven-settings
+      optional: false
