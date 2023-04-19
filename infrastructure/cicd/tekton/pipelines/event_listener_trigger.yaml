@@ -17,4 +17,4 @@ spec:
         - kind: ClusterTriggerBinding
           ref: github-push
       template:
-        ref: cicd-trigger-template
+        ref: ci-trigger-template
