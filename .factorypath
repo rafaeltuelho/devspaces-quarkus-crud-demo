@@ -131,7 +131,7 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/io/quarkus/quarkus-netty/2.11.1.Final/quarkus-netty-2.11.1.Final.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/io/netty/netty-codec/4.1.78.Final/netty-codec-4.1.78.Final.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/com/aayushatharva/brotli4j/brotli4j/1.7.1/brotli4j-1.7.1.jar" enabled="true" runInBatchMode="false"/>
-    <factorypathentry kind="VARJAR" id="M2_REPO/com/aayushatharva/brotli4j/native-osx-x86_64/1.7.1/native-osx-x86_64-1.7.1.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/com/aayushatharva/brotli4j/native-linux-x86_64/1.7.1/native-linux-x86_64-1.7.1.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/io/netty/netty-codec-haproxy/4.1.78.Final/netty-codec-haproxy-4.1.78.Final.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/io/quarkus/quarkus-vertx-latebound-mdc-provider/2.11.1.Final/quarkus-vertx-latebound-mdc-provider-2.11.1.Final.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/io/smallrye/smallrye-fault-tolerance-vertx/5.5.0/smallrye-fault-tolerance-vertx-5.5.0.jar" enabled="true" runInBatchMode="false"/>

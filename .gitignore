@@ -36,3 +36,4 @@ release.properties
 /projects/devspaces-quarkus-crud-demo/.odo/env
 pg-conn-info.json
 .factorypath
+.factorypath
